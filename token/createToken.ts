@@ -11,12 +11,16 @@
 //  - Every day, the liquidity pool is replenished
 //    and burned by 0.1% (900) $FUTURE
 
+import { readFileSync, writeFileSync } from 'fs';
+import { join } from 'path';
+
 import * as Solana from '@solana/web3.js' 
 import * as SolanaToken from '@solana/spl-token' 
 
 
 const SOLANA_RPC_NAME = "devnet"
-const SOLSCAN_URI = "https://solscan.io/"
+const SOLSCAN_URI = "https://solscan.io/{}/{}?cluster={}"
+const EPOCH_TIMESTAMP = Date().valueOf()
 
 const tokenCreator = Solana.Keypair.generate();
 const mintAuthority = Solana.Keypair.generate();
@@ -24,13 +28,52 @@ const freezeAuthority = Solana.Keypair.generate();
 const tokenTeam = Solana.Keypair.generate();
 const tokenMarketing = Solana.Keypair.generate();
 
-console.log(`Solana $FUTURE token creator (${SOLANA_RPC_NAME})`);
-console.log(`tokenCreator: ${tokenCreator.publicKey.toBase58()}, ${tokenCreator.secretKey}`);
-console.log(`mintAuthority: ${mintAuthority.publicKey.toBase58()}, ${mintAuthority.secretKey}`);
-console.log(`freezeAuthority: ${freezeAuthority.publicKey.toBase58()}, ${freezeAuthority.secretKey}`);
-console.log(`tokenTeam: ${tokenTeam.publicKey.toBase58()}, ${tokenTeam.secretKey}`);
-console.log(`tokenMarketing: ${tokenMarketing.publicKey.toBase58()}, ${tokenMarketing.secretKey}`);
-console.log(`tokenCreator: ${tokenCreator.publicKey.toBase58()}, ${tokenCreator.secretKey}`);
+writeFileSync(
+    join(__dirname, `FUTURE-${EPOCH_TIMESTAMP}`),
+    {
+        "addresses": [
+            {
+                "name": "tokenCreator",
+                "publicKey": tokenCreator.publicKey.toBase58(),
+                "secretKey": tokenCreator.secretKey
+            },
+            {
+                "name": "mintAuthority",
+                "publicKey": mintAuthority.publicKey.toBase58(),
+                "secretKey": mintAuthority.secretKey
+            },
+            {
+                "name": "freezeAuthority",
+                "publicKey": freezeAuthority.publicKey.toBase58(),
+                "secretKey": freezeAuthority.secretKey
+            },
+            {
+                "name": "tokenTeam",
+                "publicKey": tokenTeam.publicKey.toBase58(),
+                "secretKey": tokenTeam.secretKey
+            },
+            {
+                "name": "tokenMarketing",
+                "publicKey": tokenMarketing.publicKey.toBase58(),
+                "secretKey": tokenMarketing.secretKey
+            },
+        ]
+    },
+    {flag: 'w'}
+);
+
+console.log(`Solana $FUTURE token creator (${SOLANA_RPC_NAME})\n\n`);
+
+console.log(`Token creator\n
+             Public key: ${tokenCreator.publicKey.toBase58()}`);
+console.log(`Mint authority\n
+             Public key: ${mintAuthority.publicKey.toBase58()}`);
+console.log(`Freeze authority\n
+             Public key: ${freezeAuthority.publicKey.toBase58()}`);
+console.log(`Token team\n
+             Public key: ${tokenTeam.publicKey.toBase58()}`);
+console.log(`Token marketing\n
+             Public key: ${tokenMarketing.publicKey.toBase58()}`);
 
 const connection = new Solana.Connection(Solana.clusterApiUrl(SOLANA_RPC_NAME), 'confirmed');
 
