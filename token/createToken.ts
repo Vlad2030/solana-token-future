@@ -12,6 +12,8 @@
 //    and burned by 0.1% (900) $FUTURE
 
 import * as Solana from '@solana/web3.js' 
+import * as SolanaToken from '@solana/spl-token' 
+
 
 const SOLANA_RPC_NAME = "devnet"
 
@@ -31,4 +33,13 @@ if (SOLANA_RPC_NAME == "devnet") {
     await connection.confirmTransaction(airdropSignature);
 }
 
-
+const mint = await SolanaToken.createMint(
+    connection,
+    tokenCreator,
+    mintAuthority.publicKey,
+    freezeAuthority.publicKey,
+    9,
+    undefined,
+    undefined,
+    SolanaToken.TOKEN_PROGRAM_ID
+);
