@@ -16,12 +16,21 @@ import * as SolanaToken from '@solana/spl-token'
 
 
 const SOLANA_RPC_NAME = "devnet"
+const SOLSCAN_URI = "https://solscan.io/"
 
 const tokenCreator = Solana.Keypair.generate();
 const mintAuthority = Solana.Keypair.generate();
 const freezeAuthority = Solana.Keypair.generate();
 const tokenTeam = Solana.Keypair.generate();
 const tokenMarketing = Solana.Keypair.generate();
+
+console.log(`Solana $FUTURE token creator (${SOLANA_RPC_NAME})`);
+console.log(`tokenCreator: ${tokenCreator.publicKey.toBase58()}, ${tokenCreator.secretKey}`);
+console.log(`mintAuthority: ${mintAuthority.publicKey.toBase58()}, ${mintAuthority.secretKey}`);
+console.log(`freezeAuthority: ${freezeAuthority.publicKey.toBase58()}, ${freezeAuthority.secretKey}`);
+console.log(`tokenTeam: ${tokenTeam.publicKey.toBase58()}, ${tokenTeam.secretKey}`);
+console.log(`tokenMarketing: ${tokenMarketing.publicKey.toBase58()}, ${tokenMarketing.secretKey}`);
+console.log(`tokenCreator: ${tokenCreator.publicKey.toBase58()}, ${tokenCreator.secretKey}`);
 
 const connection = new Solana.Connection(Solana.clusterApiUrl(SOLANA_RPC_NAME), 'confirmed');
 
